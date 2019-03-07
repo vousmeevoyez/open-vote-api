@@ -1,0 +1,28 @@
+# Docker Compose Production Environments 
+version : '3'
+services:
+
+        flask:
+                image: open-vote-api-services
+                entrypoint: ./build.sh
+                environment:
+                - DB_USERNAME=$DB_USERNAME
+                - DB_PASSWORD=$DB_PASSWORD
+                - DB_HOSTNAME=$DB_HOSTNAME
+                - DB_NAME=$DB_NAME
+                - ENVIRONMENT=$ENVIRONMENT
+                - HOST=$HOST
+                ports:
+                - 5000:5000
+                depends_on:
+                - postgres
+                restart: always
+
+        postgres:
+                build:
+                        context: dockerfiles/postgresql/
+                environment:
+                - POSTGRES_USER=$DB_USERNAME
+                - POSTGRES_PASSWORD=$DB_PASSWORD
+                restart: always
+

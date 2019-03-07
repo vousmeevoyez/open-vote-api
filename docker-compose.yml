@@ -1,0 +1,8 @@
+# Docker Compose Base
+version : '3'
+services:
+        flask:
+                build:
+                        context: .
+                        dockerfile: dockerfiles/flask/Dockerfile
+                image: open-vote-api-services
