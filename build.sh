@@ -2,4 +2,5 @@
 
 make clean
 make upgrade
-make run
+make init
+make run-prod

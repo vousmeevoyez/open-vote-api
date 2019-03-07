@@ -18,3 +18,6 @@ shell:
 
 coverage:
 	coverage run --source app/api -m unittest discover -s app/test/
+
+run-prod:
+	gunicorn -b flask:5000 -w 4 manage:app
