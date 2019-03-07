@@ -1,6 +1,8 @@
 clean:
 	find . -type f -name '*.pyc' -delete
 	find . -type f -name '*.log' -delete
+init:
+	python manage.py init
 
 upgrade:
 	python manage.py db upgrade

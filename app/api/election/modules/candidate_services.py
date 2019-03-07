@@ -50,7 +50,6 @@ class CandidateServices:
             self.candidate = candidate_record
         #end if
         self.election = election_record
-        self.api = api
     #end def
 
     def add(self, candidate, filename):

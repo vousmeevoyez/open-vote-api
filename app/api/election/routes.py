@@ -3,12 +3,9 @@
 """
 from werkzeug.utils import secure_filename
 from flask_restplus import Resource
-
 from marshmallow import ValidationError
 
 from app.api.election import api
-
-# flask rest plus extesnion
 from app.api.request_schema import *
 from app.api.serializer import *
 # services
@@ -16,7 +13,7 @@ from app.api.election.modules.election_services import ElectionServices
 from app.api.election.modules.candidate_services import CandidateServices
 # exception
 from app.api.error.http import *
-
+from app.api.auth.decorators import admin_required
 from app.api.utility.utils import upload
 from app.config import config
 
@@ -29,6 +26,7 @@ class ElectionRoutes(Resource):
         Election routes
         api/v1/elections/
     """
+    @admin_required
     def post(self):
         """
             handle post request
@@ -43,11 +41,15 @@ class ElectionRoutes(Resource):
                              error.messages)
 
         # upload file here
-        filename = upload(request_data["images"])
+        if request_data["images"] is not None:
+            filename = upload(request_data["images"])
+        else:
+            filename = "N/A"
 
         response = ElectionServices.add(election.data, filename)
         return response
 
+    @admin_required
     def get(self):
         """
             handle get request
@@ -64,6 +66,7 @@ class ElectionInfoRoutes(Resource):
         Election routes
         api/v1/elections/<election_id>
     """
+    @admin_required
     def get(self, election_id):
         """
             Handle GET Request
@@ -74,6 +77,7 @@ class ElectionInfoRoutes(Resource):
         return response
     #end def
 
+    @admin_required
     def put(self, election_id):
         """
             handle put request
@@ -81,7 +85,7 @@ class ElectionInfoRoutes(Resource):
         """
         request_data = request_schema.parse_args(strict=True)
         try:
-            user = ElectionSchema(strict=True).validate(request_data)
+            user = ElectionSchema().validate(request_data)
         except ValidationError as error:
             raise BadRequest(ERROR["INVALID_PARAMETER"]["TITLE"],
                              ERROR["INVALID_PARAMETER"]["MESSAGE"],
@@ -89,12 +93,16 @@ class ElectionInfoRoutes(Resource):
         #end try
 
         # upload file here
-        filename = upload(request_data["images"])
-        request_data["images"] = filename
+        if request_data["images"] is not None:
+            filename = upload(request_data["images"])
+            request_data["images"] = filename
+        else:
+            request_data["images"] = "N/A"
 
         response = ElectionServices(election_id).update(request_data)
         return response
 
+    @admin_required
     def delete(self, election_id):
         """
             Handle DELETE Request
@@ -111,6 +119,7 @@ class CandidateRoutes(Resource):
         Election routes
         api/v1/elections/election_id/candidates
     """
+    @admin_required
     def post(self, election_id):
         """
             handle post request
@@ -118,7 +127,7 @@ class CandidateRoutes(Resource):
         """
         request_data = request_schema.parse_args(strict=True)
         try:
-            candidate = CandidateSchema(strict=True).load(request_data)
+            candidate = CandidateSchema().load(request_data)
         except ValidationError as error:
             raise BadRequest(ERROR["INVALID_PARAMETER"]["TITLE"],
                              ERROR["INVALID_PARAMETER"]["MESSAGE"],
@@ -126,11 +135,14 @@ class CandidateRoutes(Resource):
         #end try
 
         # upload file here
-        filename = upload(request_data["images"])
-
+        if request_data["images"] is not None:
+            filename = upload(request_data["images"])
+        else:
+            filename = "N/A"
         response = CandidateServices(election_id).add(candidate.data, filename)
         return response
 
+    @admin_required
     def get(self, election_id):
         """
             handle get request
@@ -147,6 +159,7 @@ class CandidateInfoRoutes(Resource):
         Election routes
         api/v1/elections/election_id/candidates/candidate_id
     """
+    @admin_required
     def get(self, election_id, candidate_id):
         """
             handle get request
@@ -157,6 +170,7 @@ class CandidateInfoRoutes(Resource):
         return response
     #end def
 
+    @admin_required
     def put(self, election_id, candidate_id):
         """
             handle post request
@@ -164,7 +178,7 @@ class CandidateInfoRoutes(Resource):
         """
         request_data = request_schema.parse_args(strict=True)
         try:
-            candidate = CandidateSchema(strict=True).load(request_data)
+            candidate = CandidateSchema().load(request_data)
         except ValidationError as error:
             raise BadRequest(ERROR["INVALID_PARAMETER"]["TITLE"],
                              ERROR["INVALID_PARAMETER"]["MESSAGE"],
@@ -172,10 +186,15 @@ class CandidateInfoRoutes(Resource):
         #end try
 
         # upload file here
-        request_data["images"] = upload(request_data["images"])
+        if request_data["images"] is not None:
+            request_data["images"] = upload(request_data["images"])
+        else:
+            request_data["images"] = "N/A"
+
         response = CandidateServices(election_id, candidate_id).update(request_data)
         return response
 
+    @admin_required
     def delete(self, election_id, candidate_id):
         """
             handle get request

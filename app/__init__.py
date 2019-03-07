@@ -2,10 +2,11 @@ from flask_restplus import Api
 
 from flask import Blueprint
 
-from app.api.oauth import api as auth_ns
+from app.api.auth import api as auth_ns
 from app.api.user import api as user_ns
 from app.api.election import api as election_ns
 from app.api.static import api as static_ns
+from app.api.vote import api as vote_ns
 
 
 blueprint = Blueprint("api", __name__)
@@ -45,6 +46,7 @@ api = CustomApi(blueprint,
                 contact="kelvindsmn@gmail.com")
 
 api.add_namespace(user_ns, path="/users")
-api.add_namespace(auth_ns, path="/oauth")
+api.add_namespace(auth_ns, path="/auth")
 api.add_namespace(election_ns, path="/elections")
 api.add_namespace(static_ns, path="/static")
+api.add_namespace(vote_ns, path="/votes")

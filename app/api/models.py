@@ -11,17 +11,13 @@ from datetime import timedelta
 
 from sqlalchemy.dialects.postgresql import UUID
 
-from authlib.flask.oauth2.sqla import (
-    OAuth2ClientMixin,
-    OAuth2AuthorizationCodeMixin,
-    OAuth2TokenMixin,
-)
-
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
 from app.api import db
 from app.config import config
+
+from app.api.error.token import *
 
 now = datetime.utcnow()
 
@@ -29,32 +25,6 @@ JWT_CONFIG = config.Config.JWT_CONFIG
 
 def generate_uuid():
     return uuid.uuid4()
-
-class Client(db.Model, OAuth2ClientMixin):
-    """
-        this is class that represent Client Table
-    """
-    id = db.Column(db.Integer, primary_key=True)
-    user_id    = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id",
-                                                             ondelete='CASCADE'))
-    user       = db.relationship('User')
-    
-
-class Authorization(db.Model, OAuth2AuthorizationCodeMixin):
-    id      = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id",
-                                                             ondelete='CASCADE'))
-    user    = db.relationship('User')
-
-class Token(db.Model, OAuth2TokenMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id    = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id",
-                                                             ondelete='CASCADE'))
-    user = db.relationship('User')
-
-    def is_refresh_token_expired(self):
-        expires_at = self.issued_at + self.expires_in * 2
-        return expires_at < time.time()
 
 class User(db.Model):
     """
@@ -76,8 +46,8 @@ class User(db.Model):
     vote        = db.relationship("Vote", back_populates="user")
 
     def __repr__(self):
-        return '<User {} {} {} {} {}>'.format(self.id, self.username, self.api_id,
-                                              self.role, self.status)
+        return '<User {} {} {} {}>'.format(self.id, self.username,
+                                           self.role, self.status)
 
     def set_password(self, password):
         """
@@ -96,7 +66,7 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
     @staticmethod
-    def encode_token(token_type, user_id):
+    def encode_token(token_type, user_id, role):
         """
             Function to create JWT Token
             args :
@@ -105,15 +75,16 @@ class User(db.Model):
                 role -- User Role
         """
         if token_type == "ACCESS":
-            exp = datetime.utcnow() + timedelta(minutes=JWT_CONFIG["ACCESS_EXPIRE"])
+            exp = datetime.utcnow() + timedelta(minutes=JWT_CONFIG["EXPIRE"])
         elif token_type == "REFRESH":
-            exp = datetime.utcnow() + timedelta(days=JWT_CONFIG["ACCESS_EXPIRE"])
+            exp = datetime.utcnow() + timedelta(days=JWT_CONFIG["EXPIRE"])
 
         payload = {
             "exp" : exp,
             "iat" : datetime.utcnow(),
             "sub" : str(user_id),
             "type": token_type,
+            "role" : role
         }
         return jwt.encode(
             payload,
@@ -174,7 +145,7 @@ class Candidate(db.Model):
     users       = db.relationship("User", back_populates="candidate") # 1 to 1
 
     def __repr__(self):
-        return '<Candidate  {} {} {} {} {}>'.format(self.id, self.api_id, self.name,
+        return '<Candidate  {} {} {} {}>'.format(self.id, self.name,
                                                     self.images, self.description, self.election_id)
 
 class Vote(db.Model):
@@ -187,3 +158,26 @@ class Vote(db.Model):
     user_id     = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id"))
     user        = db.relationship("User", back_populates="vote") # 1 to 1
     created_at  = db.Column(db.DateTime, default=now) # UTC
+
+class BlacklistToken(db.Model):
+    """
+        This is class Model for Blacklisted Token
+    """
+    id          = db.Column(db.Integer, primary_key=True)
+    token       = db.Column(db.String(255))
+    created_at  = db.Column(db.DateTime, default=now)
+
+    @staticmethod
+    def is_blacklisted(token):
+        """
+            function to check whether token has been blacklisted or not
+            args :
+                token -- JWT Token
+        """
+        result = BlacklistToken.query.filter_by(token=token).first()
+        return bool(result)
+
+    def __repr__(self):
+        return '<Blacklist Token {} {}>'.format(self.id, self.jti)
+    #end def
+#end class

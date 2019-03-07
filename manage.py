@@ -45,15 +45,22 @@ def test():
 @manager.command
 def init():
     """ create init function here """
+    admin = User(
+        username="EVOTESUPERADMIN",
+        email="kelvindsmn@gmail.com",
+        role=0
+    )
+    admin.set_password("password")
+    db.session.add(admin)
+    db.session.commit()
 
 def make_shell_context():
     """ create shell context here"""
     return {
-        'app'    : app,
-        'db'     : db,
-        'ApiKey' : ApiKey,
-        'User'   : User,
-        'Election': Election,
+        'app'      : app,
+        'db'       : db,
+        'User'     : User,
+        'Election' : Election,
         'Candidate': Candidate,
     }
 

@@ -35,11 +35,15 @@ class Config:
 
     JWT_CONFIG = {
         "EXPIRE" : 3600,
-        "SECRET" : 3600,
-        "ALGORITHM" : 3600,
+        "SECRET" : "somekajsdljashdhaskldhkjahskjdhkjashkjdhaksjhjdkhaskh",
+        "ALGORITHM" : "HS256",
     }
 
     ERROR = {
+        "ADMIN_REQUIRED" : {
+            "TITLE"   : "ADMIN_REQUIRED",
+            "MESSAGE" : "Require Admin Permission",
+        },
         "DECODE" : {
             "TITLE"   : "INVALID_KEY",
             "MESSAGE" : "Failed decode key",
@@ -48,13 +52,24 @@ class Config:
             "TITLE"   : "REVOKED_TOKEN",
             "MESSAGE" : "Token has been revoked",
         },
-        "EXPIRED_TOKEN" : {
+        "SIGNATURE_EXPIRED" : {
             "TITLE"   : "EXPIRED_TOKEN",
             "MESSAGE" : "Token has expired",
         },
         "BAD_SIGNATURE" : {
             "TITLE"   : "BAD_SIGNATURE",
             "MESSAGE" : "Bad Signature",
+        },
+        "BAD_AUTH_HEADER" : {
+            "TITLE"   : "BAD_SIGNATURE",
+        },
+        "INVALID_TOKEN" : {
+            "TITLE"   : "INVALID_TOKEN",
+            "MESSAGE" : "Invalid Token",
+        },
+        "EMPTY_PAYLOAD" : {
+            "TITLE"   : "EMPTY_PAYLOAD",
+            "MESSAGE" : "Empty Token Payload",
         },
         "INVALID_LOGIN" : {
             "TITLE"   : "INVALID_LOGIN",
@@ -74,6 +89,10 @@ class Config:
         },
         "INVALID_API_KEY" : {
             "TITLE"   : "INVALID_API_KEY",
+        },
+        "ALREADY_VOTE" : {
+            "TITLE"   : "ALREADY_VOTE",
+            "MESSAGE" : "User already vote",
         },
         "DUPLICATE_API_KEY" : {
             "TITLE"   : "DUPLICATE_API_KEY",

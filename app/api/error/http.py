@@ -68,9 +68,28 @@ class UnprocessableEntity(BaseError):
 
 class Unauthorized(BaseError):
     """ base http error class for unauthorized access"""
-    def __init__(self, message=None, details=None):
+    def __init__(self, error=None, message=None, details=None):
         super(BaseError, self).__init__(message, details)
         self.code = 401
-        self.error = "UNAUTHORIZED"
+
+        if error is None:
+            self.error = "UNAUTHORIZED"
+        else:
+            self. error = error
+
+        self.message = message
+        self.details = details
+
+class InsufficientScope(BaseError):
+    """ base http error class for insufficient scope """
+    def __init__(self, error=None, message=None, details=None):
+        super(BaseError, self).__init__(error, message, details)
+        self.code = 403
+
+        if error is None:
+            self.error = "INSUFFICIENT_SCOPE"
+        else:
+            self. error = error
+
         self.message = message
         self.details = details

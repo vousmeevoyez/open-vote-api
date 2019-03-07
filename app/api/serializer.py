@@ -102,7 +102,7 @@ class ApiKeySchema(ma.Schema):
 
 class UserSchema(ma.Schema):
     """ this is class schema for User"""
-    id          = fields.Str(load_only=True)
+    id          = fields.Str()
     username    = fields.Str(required=True, validate=cannot_be_blank, allow_none=True)
     name        = fields.Str(required=True, validate=(cannot_be_blank, validate_name))
     identity_id = fields.Str(required=True, validate=cannot_be_blank)
@@ -250,6 +250,7 @@ class CandidateSchema(ma.Schema):
     images      = fields.Str(dump_only=True)
     users       = fields.Nested(UserSchema, many=True)
     status      = fields.Method("bool_to_status")
+    votes       = fields.Method("count_vote")
     created_at  = fields.DateTime('%Y-%m-%d %H:%M:%S')
 
     @post_load
@@ -257,6 +258,9 @@ class CandidateSchema(ma.Schema):
         """ create user object """
         return Candidate(**request_data)
     #end def
+
+    def count_vote(self, obj):
+        return len(obj.votes)
 
     def bool_to_status(self, obj):
         """
@@ -272,7 +276,7 @@ class CandidateSchema(ma.Schema):
 
 class ElectionSchema(ma.Schema):
     """ this is class schema for Election """
-    id          = fields.Str(load_only=True)
+    id          = fields.Str()
     name        = fields.Str(required=True, validate=(cannot_be_blank, validate_name))
     description = fields.Str(required=True, validate=(cannot_be_blank, validate_description))
     images      = fields.Str(dump_only=True)

@@ -3,16 +3,12 @@
 """
 from flask_restplus import Namespace
 
-class ApiKeyNamespace:
-    api = Namespace("api_key")
-#end class
-
 class UserNamespace:
     api = Namespace("user")
 #end class
 
-class OauthNamespace:
-    api = Namespace("oauth")
+class AuthNamespace:
+    api = Namespace("auth")
 #end class
 
 class ElectionNamespace:
@@ -21,4 +17,8 @@ class ElectionNamespace:
 
 class StaticNamespace:
     api = Namespace("static")
+#end class
+
+class VoteNamespace:
+    api = Namespace("vote")
 #end class

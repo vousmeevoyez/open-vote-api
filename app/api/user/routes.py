@@ -14,6 +14,8 @@ from app.api.serializer import UserSchema
 from app.api.user.modules.user_services import UserServices
 # exception
 from app.api.error.http import *
+# decorator
+from app.api.auth.decorators import admin_required
 
 from app.config import config
 
@@ -28,6 +30,7 @@ class UserRoutes(Resource):
         User routes
         api/v1/users/
     """
+    @admin_required
     def post(self):
         """
             handle post request
@@ -44,6 +47,7 @@ class UserRoutes(Resource):
         response = UserServices.add(user.data, request_data["password"])
         return response
 
+    @admin_required
     def get(self):
         """
             handle get request
@@ -60,6 +64,7 @@ class UserInfoRoutes(Resource):
         users routes
         api/v1/users/<user_id>
     """
+    @admin_required
     def get(self, user_id):
         """
             Handle GET Request
@@ -70,6 +75,7 @@ class UserInfoRoutes(Resource):
         return response
     #end def
 
+    @admin_required
     def put(self, user_id):
         """
             handle put request
@@ -77,7 +83,7 @@ class UserInfoRoutes(Resource):
         """
         request_data = request_schema.parse_args(strict=True)
         try:
-            user = UserSchema(strict=True).validate(request_data)
+            user = UserSchema().validate(request_data)
         except ValidationError as error:
             raise BadRequest(ERROR["INVALID_PARAMETER"]["TITLE"],
                              ERROR["INVALID_PARAMETER"]["MESSAGE"],
@@ -86,6 +92,7 @@ class UserInfoRoutes(Resource):
         response = UserServices(user_id).update(request_data)
         return response
 
+    @admin_required
     def delete(self, user_id):
         """
             Handle DELETE Request
@@ -101,13 +108,15 @@ class UserEnrollmentRoutes(Resource):
     """
         User Enrollment
     """
+    @admin_required
     def post(self, user_id, candidate_id):
         """
             Enroll user as candidate
         """
         response = UserServices(user_id, candidate_id).enroll()
         return response
-
+        
+    @admin_required
     def delete(self, user_id, candidate_id):
         """
             Unroll User As Candidate
