@@ -11,13 +11,14 @@ from app.api.models import *
 # exceptions
 from sqlalchemy.exc import IntegrityError
 
-from app.api.serializer import ElectionSchema
-from app.api.serializer import CandidateSchema
-
 # http response
 from app.api.http_response import created
 from app.api.http_response import no_content
 from app.api.http_response import ok
+
+# socket
+from app.api import socket
+from app.api.election.stream import current_vote
 
 # exceptions
 from app.api.error.http import *
@@ -66,6 +67,12 @@ class VoteServices:
         except IntegrityError as error:
             db.session.rollback()
         #end try
+
+        # get current vote
+        votes = current_vote(str(candidate.election_id))
+        # send broadcast
+        socket.emit("live_count", votes, broadcast=True, namespace="/stream")
+
         return created()
     #end def
 

@@ -10,7 +10,7 @@ from flask_migrate  import Migrate, MigrateCommand
 from flask_script   import Manager, Shell
 
 from app        import blueprint
-from app.api    import create_app
+from app.api    import create_app, socket
 from app.api    import db
 
 #import model here

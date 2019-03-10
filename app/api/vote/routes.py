@@ -4,7 +4,6 @@
 from werkzeug.utils import secure_filename
 from flask_restplus import Resource
 from marshmallow import ValidationError
-
 # blueprint
 from app.api.vote import api
 # flask rest plus extesnion
@@ -16,6 +15,7 @@ from app.api.vote.modules.vote_services import VoteServices
 from app.api.error.http import *
 # decorators
 from app.api.auth.decorators import get_token_payload, token_required, admin_required
+# configuration
 from app.config import config
 
 ERROR = config.Config.ERROR
