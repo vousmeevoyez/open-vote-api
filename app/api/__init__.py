@@ -8,6 +8,7 @@ from flask  import Flask
 from flask_sqlalchemy   import SQLAlchemy
 from flask_marshmallow  import Marshmallow
 from flask_socketio     import SocketIO
+from flask_cors import CORS
 
 from raven.contrib.flask import Sentry
 
@@ -39,4 +40,6 @@ def create_app(config_name):
     if not app.debug and not app.testing:
         sentry.init_app(app)
 
+    # enable cors
+    CORS(app)
     return app
