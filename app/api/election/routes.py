@@ -127,7 +127,7 @@ class CandidateRoutes(Resource):
         """
         request_data = request_schema.parse_args(strict=True)
         try:
-            candidate = CandidateSchema().load(request_data)
+            candidate = CandidateSchema(strict=True).load(request_data)
         except ValidationError as error:
             raise BadRequest(ERROR["INVALID_PARAMETER"]["TITLE"],
                              ERROR["INVALID_PARAMETER"]["MESSAGE"],
