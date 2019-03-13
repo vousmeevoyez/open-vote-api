@@ -167,7 +167,7 @@ class ProductionConfig(Config):
     PRESERVE_CONTEXT_ON_EXCEPTION = False
 
     SENTRY_CONFIG = Config.SENTRY_CONFIG
-    SENTRY_CONFIG["dsn"] = environ.get("SENTRY_DSN")
+    SENTRY_CONFIG["dsn"] = os.environ.get("SENTRY_DSN")
 #end class
 
 CONFIG_BY_NAME = dict(
