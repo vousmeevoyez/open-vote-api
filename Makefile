@@ -20,4 +20,7 @@ coverage:
 	coverage run --source app/api -m unittest discover -s app/test/
 
 run-prod:
-	gunicorn -b flask:5000 -w 4 manage:app
+	gunicorn -b flask:5000 -w 2 manage:app
+
+run-stream:
+	gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -b flask:5000 -w 1 manage:app 

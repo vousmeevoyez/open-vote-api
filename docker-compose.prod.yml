@@ -30,7 +30,7 @@ services:
                 restart: always
                 networks:
                         app_net:
-                                ipv4_address: 172.16.238.11
+                                ipv4_address: 172.16.238.12
 
 networks:
         app_net:

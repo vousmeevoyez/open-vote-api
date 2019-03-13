@@ -9,6 +9,7 @@ chardet==3.0.4
 Click==7.0
 coverage==4.5.2
 cryptography==2.6.1
+dnspython==1.16.0
 Flask==1.0.2
 Flask-Cors==3.0.7
 flask-marshmallow==0.9.0
@@ -19,6 +20,9 @@ Flask-Script==2.0.6
 Flask-SocketIO==3.3.2
 Flask-SQLAlchemy==2.3.2
 Flask-Testing==0.7.1
+gevent==1.4.0
+gevent-websocket==0.10.1
+greenlet==0.4.15
 gunicorn==19.9.0
 idna==2.8
 isort==4.3.4
@@ -31,6 +35,7 @@ MarkupSafe==1.1.0
 marshmallow==2.18.0
 marshmallow-sqlalchemy==0.15.0
 mccabe==0.6.1
+monotonic==1.5
 oauthlib==2.1.0
 psycopg2==2.7.7
 psycopg2-binary==2.7.7

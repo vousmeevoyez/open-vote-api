@@ -3,4 +3,4 @@
 make clean
 make upgrade
 make init
-make run-prod
+make run-stream
