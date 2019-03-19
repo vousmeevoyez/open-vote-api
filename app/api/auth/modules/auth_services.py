@@ -56,7 +56,7 @@ class AuthServices:
 
         access_token = User.encode_token("ACCESS", self._user.id, role).decode()
         user_info = UserSchema().dump(self._user).data
-        return ok({"access_token" : access_token, user: user_info})
+        return ok({"access_token" : access_token, "user": user_info})
     #end def
 
     @staticmethod
