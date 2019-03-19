@@ -153,8 +153,8 @@ class UserSchema(ma.Schema):
         # onyl allow alphanumeric character, . _ -
         if username is not None:
             pattern = r"^[a-zA-Z0-9_.-]+$"
-            if len(username) < 5:
-                raise ValidationError('Invalid username, minimum is 5 character')
+            if len(username) < 1:
+                raise ValidationError('Invalid username, minimum is 1 character')
             if len(username) > 32:
                 raise ValidationError('Invalid username, max is 32 character')
             if  re.match(pattern, username) is None:
