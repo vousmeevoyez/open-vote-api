@@ -4,7 +4,8 @@
 #pylint: disable=bad-whitespace
 from app.api import db
 
-from app.api.models import *
+# models
+from app.api.models import User
 
 # exceptions
 from sqlalchemy.exc import IntegrityError
@@ -13,6 +14,9 @@ from sqlalchemy.exc import IntegrityError
 from app.api.http_response import created
 from app.api.http_response import no_content
 from app.api.http_response import ok
+
+# sechema
+from app.api.serializer import UserSchema
 
 # exceptions
 from app.api.error.http import *
@@ -51,7 +55,8 @@ class AuthServices:
             role = "PARTICIPANT"
 
         access_token = User.encode_token("ACCESS", self._user.id, role).decode()
-        return ok({"access_token" : access_token})
+        user_info = UserSchema().dump(self._user).data
+        return ok({"access_token" : access_token, user: user_info})
     #end def
 
     @staticmethod
