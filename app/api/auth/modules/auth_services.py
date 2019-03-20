@@ -5,7 +5,7 @@
 from app.api import db
 
 # models
-from app.api.models import User
+from app.api.models import *
 
 # exceptions
 from sqlalchemy.exc import IntegrityError

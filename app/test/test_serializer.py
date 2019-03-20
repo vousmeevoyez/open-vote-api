@@ -50,7 +50,7 @@ class TestUserSchema(BaseTestCase):
     def test_validate_username_too_short(self):
         """ test user serializer with too short string"""
         data = {
-            "username"    : "i",
+            "username"    : "",
             "name"        : "Jennie",
             "identity_id" : "1111222233334444",
             "msisdn"      : "081212341234",
