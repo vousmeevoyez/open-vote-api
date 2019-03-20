@@ -88,6 +88,7 @@ class CandidateServices:
         """ update candidate information """
         self.candidate.name        = params["name"]
         self.candidate.description = params["description"]
+        self.candidate.order_no    = params['order_no']
 
         # remove the previous image first and the upload a new one
         result = remove(self.candidate.images)
