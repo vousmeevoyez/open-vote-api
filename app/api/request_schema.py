@@ -29,4 +29,5 @@ class ElectionRequestSchema:
     parser.add_argument("name", type=str, required=True)
     parser.add_argument("images",type=FileStorage, location="files")
     parser.add_argument("description",type=str, required=True)
+    parser.add_argument("order_no",type=str)
 #end class

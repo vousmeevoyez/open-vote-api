@@ -134,6 +134,7 @@ class Candidate(db.Model):
         this is class that represent Candidate Table
     """
     id          = db.Column(UUID(as_uuid=True), unique=True, primary_key=True, default=generate_uuid)
+    order_no    = db.Column(db.Integer) # special order_no
     name        = db.Column(db.String(144))
     description = db.Column(db.String(255))
     images      = db.Column(db.String(255))

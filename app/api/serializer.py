@@ -245,6 +245,7 @@ class UserSchema(ma.Schema):
 class CandidateSchema(ma.Schema):
     """ this is class schema for Election """
     id          = fields.Str()
+    order_no    = fields.Str()
     name        = fields.Str(required=True, validate=(cannot_be_blank, validate_name))
     description = fields.Str(required=True, validate=(cannot_be_blank, validate_description))
     images      = fields.Str(dump_only=True)

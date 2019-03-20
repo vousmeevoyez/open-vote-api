@@ -232,6 +232,7 @@ class BaseTestCase(TestCase):
             data=dict(
                 name=params["name"],
                 description=params["description"],
+                order_no="1"
             ),
             headers=headers
         )
