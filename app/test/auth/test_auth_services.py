@@ -95,3 +95,8 @@ class TestAuthServices(BaseTestCase):
         mock_decode.side_effect = EmptyPayloadError
         with self.assertRaises(Unauthorized):
             AuthServices._current_login_user("lkadsjlkjaskljdkjaskdjlajldaslkjdak")
+
+    def test_logout(self):
+        """ test function that checking user login"""
+        result = AuthServices.logout("some-access-token")
+        self.assertEqual(result[1], 204)

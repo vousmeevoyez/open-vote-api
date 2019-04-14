@@ -179,6 +179,6 @@ class BlacklistToken(db.Model):
         return bool(result)
 
     def __repr__(self):
-        return '<Blacklist Token {} {}>'.format(self.id, self.jti)
+        return '<Blacklist Token {} {}>'.format(self.id, self.token)
     #end def
 #end class
