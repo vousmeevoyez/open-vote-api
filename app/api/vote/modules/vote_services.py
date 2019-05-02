@@ -73,7 +73,7 @@ class VoteServices:
         # send broadcast
         socket.emit("live_count", votes, broadcast=True, namespace="/stream")
 
-        return created()
+        return no_content()
     #end def
 
     @staticmethod
