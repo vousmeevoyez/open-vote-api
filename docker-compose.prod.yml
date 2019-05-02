@@ -43,6 +43,9 @@ services:
                 - 5001:5001
                 depends_on:
                 - flask
+                networks:
+                        app_net:
+                                ipv4_address: 172.16.238.14
 
 networks:
         app_net:
