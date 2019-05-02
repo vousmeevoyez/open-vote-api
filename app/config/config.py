@@ -35,7 +35,7 @@ class Config:
 
     JWT_CONFIG = {
         "EXPIRE" : 3600,
-        "SECRET" : "somekajsdljashdhaskldhkjahskjdhkjashkjdhaksjhjdkhaskh",
+        "SECRET" : os.getenv('JWT_SECRET') or "somekajsdljashdhaskldhkjahskjdhkjashkjdhaksjhjdkhaskh",
         "ALGORITHM" : "HS256",
     }
 

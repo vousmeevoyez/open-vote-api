@@ -46,11 +46,11 @@ def test():
 def init():
     """ create init function here """
     admin = User(
-        username="EVOTESUPERADMIN",
+        username=os.getenv("ADMIN_USERNAME"),
         email="kelvindsmn@gmail.com",
         role=0
     )
-    admin.set_password("password")
+    admin.set_password(os.getenv("ADMIN_PASSWORD"))
     db.session.add(admin)
     db.session.commit()
 
