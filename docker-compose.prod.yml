@@ -32,6 +32,18 @@ services:
                         app_net:
                                 ipv4_address: 172.16.238.12
 
+        grpc:
+                image: open-vote-grpc
+                entrypoint: ./start.sh
+                environment:
+                - GRPC_ENDPOINT_URL=$GRPC_ENDPOINT_URL
+                - GRPC_PORT=$GRPC_PORT
+                restart: always
+                ports:
+                - 5001:5001
+                depends_on:
+                - flask
+
 networks:
         app_net:
                 driver: bridge
