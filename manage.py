@@ -18,7 +18,7 @@ from app.api        import models
 from app.api.models import *
 
 app = create_app(os.getenv("ENVIRONMENT") or 'dev')
-app.register_blueprint(blueprint, url_prefix="/api/v1")
+app.register_blueprint(blueprint, url_prefix="/v1")
 
 app.app_context().push()
 

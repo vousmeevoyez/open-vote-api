@@ -11,7 +11,7 @@ from app.config import config
 
 TEST_CONFIG = config.TestingConfig
 
-BASE_URL = "/api/v1"
+BASE_URL = "/v1"
 
 class BaseTestCase(TestCase):
     """ This is Base Tests """

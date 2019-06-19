@@ -1,8 +1,44 @@
-# Docker Compose Base
+# Docker Compose Production Environments 
 version : '3'
 services:
-        flask:
+
+        vote-api:
                 build:
                         context: .
                         dockerfile: dockerfiles/flask/Dockerfile
                 image: open-vote-api-services
+                entrypoint: ./build.sh
+                env_file: .env
+                ports:
+                - 5000:5000
+                depends_on:
+                - postgres
+                restart: always
+                networks:
+                - traefik-net
+
+        postgres:
+                build:
+                        context: dockerfiles/postgresql/
+                environment:
+                - POSTGRES_USER=$DB_USERNAME
+                - POSTGRES_PASSWORD=$DB_PASSWORD
+                restart: always
+                networks:
+                - traefik-net
+
+        vote-grpc:
+                image: open-vote-grpc
+                entrypoint: ./start.sh
+                environment:
+                - GRPC_ENDPOINT_URL=$GRPC_ENDPOINT_URL
+                - GRPC_PORT=$GRPC_PORT
+                restart: always
+                depends_on:
+                - vote-api
+                networks:
+                - traefik-net
+
+networks:
+        traefik-net:
+                external: true
