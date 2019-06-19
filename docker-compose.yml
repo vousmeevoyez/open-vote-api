@@ -16,6 +16,8 @@ services:
                 restart: always
                 networks:
                 - traefik-net
+                labels:
+                - "traefik.frontend.rule=Host:vote-api.vousmeevoyez.xyz"
 
         postgres:
                 build:
@@ -33,11 +35,15 @@ services:
                 environment:
                 - GRPC_ENDPOINT_URL=$GRPC_ENDPOINT_URL
                 - GRPC_PORT=$GRPC_PORT
-                restart: always
+                ports:
+                - 5001:5001
                 depends_on:
                 - vote-api
+                restart: always
                 networks:
                 - traefik-net
+                labels:
+                - "traefik.frontend.rule=Host:vote-grpc.vousmeevoyez.xyz"
 
 networks:
         traefik-net:
