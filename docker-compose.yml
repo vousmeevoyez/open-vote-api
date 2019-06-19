@@ -26,6 +26,8 @@ services:
                 - POSTGRES_USER=$DB_USERNAME
                 - POSTGRES_PASSWORD=$DB_PASSWORD
                 restart: always
+                volumes:
+                - "persist_volume:/var/lib/postgresql/data"
                 networks:
                 - traefik-net
 
@@ -44,6 +46,9 @@ services:
                 - traefik-net
                 labels:
                 - "traefik.frontend.rule=Host:vote-grpc.vousmeevoyez.xyz"
+
+volumes:
+        persist_volume:
 
 networks:
         traefik-net:
