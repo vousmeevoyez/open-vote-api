@@ -115,3 +115,5 @@ dmypy.json
 
 # data
 data/
+# secrets
+secrets/

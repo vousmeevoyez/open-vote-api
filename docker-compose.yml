@@ -34,9 +34,7 @@ services:
         vote-grpc:
                 image: open-vote-grpc
                 entrypoint: ./start.sh
-                environment:
-                - GRPC_ENDPOINT_URL=$GRPC_ENDPOINT_URL
-                - GRPC_PORT=$GRPC_PORT
+                env_file: .env
                 ports:
                 - 5001:5001
                 depends_on:
