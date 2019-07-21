@@ -53,12 +53,17 @@ class VoteServices:
         #end if
 
         # make sure the user hasnt vote
-        vote = Vote.query.filter_by(user_id=self._user.id,
-                                    candidate_id=candidate.id).first()
-        if vote is not None:
-            raise UnprocessableEntity(ERROR["ALREADY_VOTE"]["TITLE"],
-                                      ERROR["ALREADY_VOTE"]["MESSAGE"])
-        #end if
+        current_election_id = candidate.election_id
+        votes = Vote.query.filter_by(user_id=self._user.id).all()
+
+        if not votes:
+            for vote in votes:
+                past_voted_election_id =  vote.candidate.election_id
+
+                if current_election_id == past_voted_election_id:
+                    raise UnprocessableEntity(ERROR["ALREADY_VOTE"]["TITLE"],
+                                              ERROR["ALREADY_VOTE"]["MESSAGE"])
+                #end if
 
         try:
             vote = Vote(user_id=self._user.id, candidate_id=candidate.id)
