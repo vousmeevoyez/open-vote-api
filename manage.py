@@ -45,14 +45,18 @@ def test():
 @manager.command
 def init():
     """ create init function here """
-    admin = User(
-        username=os.getenv("ADMIN_USERNAME"),
-        email="kelvindsmn@gmail.com",
-        role=0
-    )
-    admin.set_password(os.getenv("ADMIN_PASSWORD"))
-    db.session.add(admin)
-    db.session.commit()
+    admin_username = os.getenv("ADMIN_USERNAME", "EVOTESUPERADMIN")
+    # only create when admin not exist!
+    admin = User.query.filter_by(username=admin_username).first()
+    if not admin:
+        admin = User(
+            username=admin_username,
+            email="kelvindsmn@gmail.com",
+            role=0
+        )
+        admin.set_password(os.getenv("ADMIN_PASSWORD", "password"))
+        db.session.add(admin)
+        db.session.commit()
 
 def make_shell_context():
     """ create shell context here"""

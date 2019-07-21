@@ -160,6 +160,20 @@ class Vote(db.Model):
     user        = db.relationship("User", back_populates="vote") # 1 to 1
     created_at  = db.Column(db.DateTime, default=now) # UTC
 
+    @staticmethod
+    def not_voted_yet(user_id, candidate):
+        votes = Vote.query.filter_by(user_id=user_id).all()
+        if votes:
+            for vote in votes:
+                current_election = candidate.election
+                past_election = vote.candidate.election
+                if current_election == past_election:
+                    return False
+                # end if
+            # end for
+        # end if
+        return True
+
 class BlacklistToken(db.Model):
     """
         This is class Model for Blacklisted Token
